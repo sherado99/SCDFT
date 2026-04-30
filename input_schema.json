@@ -1,0 +1,85 @@
+{
+  "title": "Stech Evaluation & Review Tone Improver (SERTI)",
+  "description": "Rewrite multiple feedback, complaints, or evaluation texts to be honest, constructive, and professional. Upload CSV or provide a JSON array. SERTI preserves all criticism while converting harsh language into actionable, professional text.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "csvFile": {
+      "title": "CSV File (optional)",
+      "type": "string",
+      "description": "Upload a CSV file. You can use your existing company CSV without renaming columns.",
+      "editor": "fileupload"
+    },
+    "feedbacks": {
+      "title": "Feedback Array (optional)",
+      "type": "array",
+      "description": "Alternative to CSV: provide an array of feedback objects. All fields except originalFeedback are optional.",
+      "editor": "json",
+      "prefill": [
+        {
+          "originalFeedback": "His work is a mess. Deadlines keep slipping. I'm tired of saying the same things over and over.",
+          "targetTone": "honest and constructive",
+          "additionalInstructions": "Focus on actionable steps",
+          "context": "performance review",
+          "recipientName": "Budi"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "originalFeedback": {
+            "type": "string",
+            "title": "Original Feedback",
+            "description": "The raw feedback or complaint you want to refine."
+          },
+          "targetTone": {
+            "type": "string",
+            "title": "Target Tone",
+            "description": "Desired tone for this feedback.",
+            "enum": ["honest and constructive", "empathetic", "professional and actionable", "firm but fair"]
+          },
+          "additionalInstructions": {
+            "type": "string",
+            "title": "Additional Instructions",
+            "description": "Extra guidance for the refinement.",
+            "editor": "textarea"
+          },
+          "context": {
+            "type": "string",
+            "title": "Context (optional)",
+            "description": "Type of feedback (performance review, customer complaint, product review, public report)."
+          },
+          "recipientName": {
+            "type": "string",
+            "title": "Recipient Name (optional)",
+            "description": "Name of the recipient. If provided, SERTI will address them respectfully."
+          }
+        },
+        "required": ["originalFeedback"]
+      }
+    },
+    "defaultTone": {
+      "title": "Default Tone",
+      "type": "string",
+      "description": "Fallback tone if not specified per item.",
+      "default": "honest and constructive",
+      "enum": ["honest and constructive", "empathetic", "professional and actionable", "firm but fair"]
+    },
+    "maxConcurrency": {
+      "title": "Max Concurrency",
+      "type": "integer",
+      "description": "Number of feedback items to process simultaneously (1-20).",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5
+    },
+    "timeout": {
+      "title": "Timeout (seconds)",
+      "type": "integer",
+      "description": "Max wait time per feedback request.",
+      "minimum": 10,
+      "maximum": 300,
+      "default": 60
+    }
+  }
+}
