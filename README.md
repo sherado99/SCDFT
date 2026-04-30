@@ -65,29 +65,30 @@ Create a CSV file with at least an `originalFeedback` column.
 | `context` | ❌ | Type of feedback (`performance review`, `customer complaint`, `product review`, `public report`). Helps SERTI refine more precisely. |
 | `recipientName` | ❌ | Name of the person receiving the feedback. If provided, SERTI will address them respectfully. |
 
-**Example CSV content**
+Example CSV content
+
 ```csv
 originalFeedback,targetTone,additionalInstructions,context,recipientName
-"Kerjaannya berantakan. Deadline molor terus. Saya sudah capek ngomongin hal yang sama.",honest and constructive,"Focus on actionable steps",performance review,Budi
-"Aplikasi ini sampah! Sering crash dan fiturnya gak jelas.","professional and actionable","Convert into a formal bug report",product review,
-"Jalan di kampung kami rusak parah! Udah 2 tahun gak diperbaiki!",professional and actionable,"Convert into a formal citizen complaint",public report,
+"His work is a mess. Deadlines keep slipping. I'm tired of saying the same things over and over.",honest and constructive,"Focus on actionable steps",performance review,Budi
+"This app is garbage! It crashes constantly and the features are unclear.","professional and actionable","Convert into a formal bug report",product review,
+"The road in our village is severely damaged! It hasn't been repaired for 2 years!",professional and actionable,"Convert into a formal citizen complaint",public report,
 ```
 
 Upload this file using the CSV File field in the Actor input form.
 
-### 2. JSON Array (for API & advanced users)
+2. JSON Array (for API & advanced users)
 
 ```json
 [
   {
-    "originalFeedback": "Kerjaannya berantakan. Deadline molor terus. Saya sudah capek ngomongin hal yang sama.",
+    "originalFeedback": "His work is a mess. Deadlines keep slipping. I'm tired of saying the same things over and over.",
     "targetTone": "honest and constructive",
     "additionalInstructions": "Focus on actionable steps",
     "context": "performance review",
     "recipientName": "Budi"
   },
   {
-    "originalFeedback": "Aplikasi ini sampah! Sering crash dan fiturnya gak jelas.",
+    "originalFeedback": "This app is garbage! It crashes constantly and the features are unclear.",
     "targetTone": "professional and actionable",
     "context": "product review"
   }
@@ -100,25 +101,24 @@ Upload this file using the CSV File field in the Actor input form.
 
 After the run, you get a structured dataset (JSON/CSV). Each row contains:
 
-- Field Description
-- originalFeedback The raw feedback you provided.
-- improvedFeedback The refined, professional version.
-- Every criticism is preserved; every harsh word is replaced with actionable language.
-- toneUsed The tone that was applied.
-- status success or error.
-- error Error message (if any).
-- timestamp Processing timestamp (ISO 8601).
-- context The context you provided (if any).
-- recipientName The recipient name you provided (if any).
-- auditHash A unique SHA‑256 hash of the output (for audit trail and accountability).
+Field Description
+originalFeedback The raw feedback you provided.
+improvedFeedback The refined, professional version. Every criticism is preserved; every harsh word is replaced with actionable language.
+toneUsed The tone that was applied.
+status success or error.
+error Error message (if any).
+timestamp Processing timestamp (ISO 8601).
+context The context you provided (if any).
+recipientName The recipient name you provided (if any).
+auditHash A unique SHA‑256 hash of the output (for audit trail and accountability).
 
 Example output (JSON):
 
 ```json
 [
   {
-    "originalFeedback": "Kerjaannya berantakan. Deadline molor terus. Saya sudah capek ngomongin hal yang sama.",
-    "improvedFeedback": "Budi menghadapi tantangan serius dalam konsistensi memenuhi tenggat waktu. Hal ini telah berulang dan berdampak pada tim. Kami tidak bisa mengandalkan output-nya sampai ada perubahan yang nyata dan terukur.",
+    "originalFeedback": "His work is a mess. Deadlines keep slipping. I'm tired of saying the same things over and over.",
+    "improvedFeedback": "Budi is facing serious challenges in consistently meeting deadlines. This has been a recurring issue that is affecting the team. We cannot rely on his output until there is measurable and sustained improvement.",
     "toneUsed": "honest and constructive",
     "status": "success",
     "timestamp": "2026-05-01T10:30:00.000Z",
@@ -128,6 +128,8 @@ Example output (JSON):
   }
 ]
 ```
+
+---
 
 You can download the dataset as CSV directly from the Apify Console, or access it programmatically via the Apify API.
 
