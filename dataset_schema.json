@@ -1,0 +1,89 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "originalFeedback": {
+        "type": "string",
+        "title": "Original Feedback",
+        "description": "The raw feedback provided by the user.",
+        "example": "His work is a mess. Deadlines keep slipping."
+      },
+      "improvedFeedback": {
+        "type": "string",
+        "title": "Improved Feedback",
+        "description": "The feedback refined by SERTI with honest, constructive language.",
+        "example": "Budi is facing serious challenges in consistently meeting deadlines."
+      },
+      "toneUsed": {
+        "type": "string",
+        "title": "Tone Used",
+        "description": "The tone applied to the feedback.",
+        "example": "honest and constructive"
+      },
+      "status": {
+        "type": "string",
+        "title": "Status",
+        "description": "The success or failure status of the processing.",
+        "enum": ["success", "error"],
+        "example": "success"
+      },
+      "timestamp": {
+        "type": "string",
+        "title": "Timestamp",
+        "description": "The processing timestamp in ISO 8601 format.",
+        "example": "2026-05-01T10:30:00.000Z"
+      },
+      "context": {
+        "type": "string",
+        "title": "Context",
+        "description": "The context of the feedback (e.g., performance review, customer complaint).",
+        "example": "performance review"
+      },
+      "recipientName": {
+        "type": "string",
+        "title": "Recipient Name",
+        "description": "Name of the recipient.",
+        "example": "Budi"
+      },
+      "auditHash": {
+        "type": "string",
+        "title": "Audit Hash",
+        "description": "A unique SHA‑256 hash of the output for audit trail and accountability.",
+        "example": "a1b2c3d4e5f6a7b8c9d0..."
+      }
+    },
+    "required": ["originalFeedback", "improvedFeedback", "status"]
+  },
+  "views": {
+    "overview": {
+      "title": "SERTI Feedback Refinement Results",
+      "transformation": {
+        "fields": [
+          "originalFeedback",
+          "improvedFeedback",
+          "toneUsed",
+          "status",
+          "timestamp",
+          "context",
+          "recipientName",
+          "auditHash"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "originalFeedback": { "label": "Original Feedback", "format": "text" },
+          "improvedFeedback": { "label": "Improved Feedback", "format": "text" },
+          "toneUsed": { "label": "Tone", "format": "text" },
+          "status": { "label": "Status", "format": "text" },
+          "timestamp": { "label": "Time", "format": "text" },
+          "context": { "label": "Context", "format": "text" },
+          "recipientName": { "label": "Recipient", "format": "text" },
+          "auditHash": { "label": "Audit Hash", "format": "text" }
+        }
+      }
+    }
+  }
+}
