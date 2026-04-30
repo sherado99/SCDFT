@@ -1,0 +1,14 @@
+{
+  "name": "stech-evaluation-review-tone-improver",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SERTI – Stech Evaluation & Review Tone Improver. Bulk feedback rewriter that ensures every evaluation is honest, constructive, and professional.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "apify": "^3.1.0",
+    "axios": "^1.6.0"
+  }
+}
