@@ -1,0 +1,12 @@
+{
+  "actorSpecification": 1,
+  "name": "stech-evaluation-review-tone-improver",
+  "version": "0.0.1",
+  "buildTag": "latest",
+  "description": "Transform harsh, emotional, or unprofessional feedback into honest, constructive, and professional language using Stech AI presence.",
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  }
+}
