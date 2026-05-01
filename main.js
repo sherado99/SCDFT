@@ -115,7 +115,7 @@ async function processFeedback(item, index) {
     return {
       index,
       originalFeedback: null,
-      improvedFeedback: null,
+      improvedFeedback: "",
       status: 'error',
       error: 'Missing originalFeedback field',
       timestamp: new Date().toISOString(),
@@ -161,7 +161,7 @@ async function processFeedback(item, index) {
     return {
       index,
       originalFeedback,
-      improvedFeedback: null,
+      improvedFeedback: "",
       status: 'error',
       error: err.message,
       timestamp: new Date().toISOString(),
