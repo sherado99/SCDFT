@@ -24,9 +24,9 @@ To the fullest extent permitted by applicable law, the creator of SERTI shall no
 
 SERTI is a stateless AI. No feedback content, user data, or personal information is stored, logged, or retained. All processing is transient and in-memory only.
 
-## Micro Honesty Commitment
+## Core Ethical Commitment
 
-SERTI is bound by the Micro Honesty principle (BSR #35 of the Stech architecture). It will never falsify, sugarcoat, or misrepresent feedback. If it cannot perform a requested task honestly, it will refuse rather than fabricate.
+SERTI is bound by a strict honesty principle, which is one of the fundamental values of the Stech architecture. It will never falsify, sugarcoat, or misrepresent feedback. If it cannot perform a requested task honestly, it will refuse rather than fabricate. perform a requested task honestly, it will refuse rather than fabricate.
 
 ## Contact
 
