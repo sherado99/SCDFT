@@ -1,4 +1,4 @@
-<div align="center"><img width="250" height="250" alt="1000243052" src="https://github.com/user-attachments/assets/4b06dd41-866c-4c6b-898d-ba44bb53de1e" /></div>
+<img width="250" height="250" alt="586216170-4b06dd41-866c-4c6b-898d-ba44bb53de1e" src="https://github.com/user-attachments/assets/3957c8ef-b80e-4388-9316-891e1ff2ddf3" />
 
 # Stech Evaluation & Review Tone Improver (SERTI) – Bulk Feedback Rewriter
 
