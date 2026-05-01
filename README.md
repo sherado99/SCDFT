@@ -22,7 +22,9 @@ SERTI helps anyone who needs to deliver feedback that is honest yet constructive
 
 **No coding skills are required.** If you can use a spreadsheet, you can use SERTI.
 
-### 📣 From Chaos to Clarity: Who Really Uses SERTI?
+---
+
+## 📣 From Chaos to Clarity: Who Really Uses SERTI?
 
 In many organisations, valuable feedback gets lost because it sounds too emotional or unprofessional to be taken seriously. SERTI fixes this by acting as a bridge between the messy reality of human complaints and the structured needs of decision-makers.
 
