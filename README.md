@@ -149,7 +149,7 @@ Time saved: hours → minutes. Integrity: preserved.
 ## ❗ Notes & Risks
 
 - SERTI is NOT an HR decision tool. It is a writing assistant only. All final decisions on performance, discipline, or employment must remain with human managers. SERTI does not evaluate, score, or recommend personnel actions.
-- SERTI will NOT falsify feedback. Micro Honesty (BSR #35) is embedded in its architecture. It will never turn a serious criticism into an empty compliment, nor sugarcoat the truth.
+- SERTI will NOT falsify feedback. A core honesty principle is embedded in its architecture. It will never turn a serious criticism into an empty compliment, nor sugarcoat the truth.
 - Always review the refined feedback before delivering. AI can make mistakes, and the final responsibility for the message rests with the sender.
 - No legal, medical, or financial advice – Stech is not a professional advisor; the output is for language improvement only.
 - No data storage – feedback items are processed in memory and never persisted; once a run is complete, the data is available only in your dataset until you delete it.
@@ -174,9 +174,8 @@ Because SERTI is a published Apify Actor, it automatically appears in the integr
 
 🔗 Links
 
-- Stech API on RapidAPI – for production API access with higher rate limits
-- Interactive API Documentation (Postman) – explore and test the API endpoints directly
-- GitHub Repository – core values, license, and legal information
+- Stech Service on RapidAPI – for production access with higher rate limits
+- Interactive Service Documentation (Postman) – explore and test the service endpoints directly
 
 ---
 
@@ -186,7 +185,7 @@ This Actor is provided for informational and communication improvement purposes 
 Stech does not give financial, legal, or medical advice. Always review the output before delivering.
 By using this Actor, you agree that the creator is not liable for any consequences arising from its use.
 ---
-The source code of SERTI is publicly available for transparency and trust. All rights are reserved under the Stech Commercial License (SCL) v2.1. For full terms, see the LICENSE file in the Stech repository.
+The source code of SERTI is publicly available for transparency and trust. All rights are reserved under the **Stech Commercial License (SCL) v2.1**. For full terms, see the [LICENSE](https://github.com/sherado99/Stech/blob/main/LICENSE.md) file in the Stech repository.
 
 ---
 
