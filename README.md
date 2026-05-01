@@ -22,6 +22,27 @@ SERTI helps anyone who needs to deliver feedback that is honest yet constructive
 
 **No coding skills are required.** If you can use a spreadsheet, you can use SERTI.
 
+### 📣 From Chaos to Clarity: Who Really Uses SERTI?
+
+In many organisations, valuable feedback gets lost because it sounds too emotional or unprofessional to be taken seriously. SERTI fixes this by acting as a bridge between the messy reality of human complaints and the structured needs of decision-makers.
+
+**Here is how feedback travels without SERTI:**
+1. A frustrated customer yells at a support agent.
+2. The agent, already stressed, passes the raw complaint to their manager.
+3. The manager reads an emotional rant, struggles to extract the core issue, and hesitates to forward it to the director.
+4. **Result:** The director never hears the real problem. No action is taken. The customer leaves.
+
+**Here is how feedback travels with SERTI (the ideal workflow):**
+1. A frustrated customer yells at a support agent.
+2. The agent (or their manager) pastes the raw text into SERTI.
+3. SERTI transforms *"This app is garbage!"* into *"The application crashes frequently when generating reports, disrupting the team's workflow. This needs immediate attention."*
+4. **Result:** The manager can now confidently forward a clear, professional report to the Product Director, who can finally take action based on real, unfiltered data.
+
+**Why this matters:**
+- **For Managers:** You don't have to be a professional editor to create a professional report.
+- **For Directors:** You finally receive feedback that is clear, traceable (thanks to the `auditHash`), and ready to be turned into an action plan.
+- **For Everyone:** The truth is never lost in translation. SERTI preserves every criticism, but it delivers it in a way that can actually be heard.
+
 ---
 
 ## ⚙️ Two Ways to Use SERTI
