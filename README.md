@@ -168,6 +168,9 @@ You can download the dataset as CSV directly from the Apify Console, or access i
 Time saved: hours → minutes. Integrity: preserved.
 
 ---
+### ❌ Not a Bulk Processor
+
+SERTI is not a mass-feedback tool. It does not take a single template and spray it to thousands of recipients. Each feedback item is individually refined through the Stech Core API, ensuring ethical, honest, and personalized output. We deliver the value of genuine human connection, not just the quantity of feedback processed.
 
 ## ❗ Notes & Risks
 
