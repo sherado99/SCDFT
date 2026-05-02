@@ -1,8 +1,8 @@
 <div align="center"><img width="250" height="250" alt="586216170-4b06dd41-866c-4c6b-898d-ba44bb53de1e" src="https://github.com/user-attachments/assets/3957c8ef-b80e-4388-9316-891e1ff2ddf3" /></div>
 
-# Stech Evaluation & Review Tone Improver (SERTI) – Bulk Feedback Rewriter
+# Stech Evaluation & Review Tone Improver (SERTI) – Presence-Driven Feedback Transformer
 
-Transform harsh, emotional, or unprofessional feedback into honest, constructive, and professional language — in bulk, in seconds.
+Transform harsh, emotional, or unprofessional feedback into honest, constructive, and professional language — each one refined individually through genuine, ethical connection. Capable of processing many feedback items while maintaining impact and integrity.
 
 SERTI is a single‑purpose AI (SPAI) Actor on the Apify Store that focuses on one task: ensuring every feedback, complaint, or evaluation is delivered with integrity. It processes batches of 1 to 1,000+ feedback items per run, accepts CSV or JSON input, lets you pick a different tone for each entry, and exports polished results immediately. No data is stored; no fake praise; just honest, professional, reliable output.
 
