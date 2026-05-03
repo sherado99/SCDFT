@@ -180,14 +180,39 @@ You can download the dataset as CSV directly from the Apify Console, or access i
 | Timeout (seconds) | Maximum wait time per feedback request. | 60 |
 
 ---
+## 🔌 Integrations (Built‑in by Apify)
+
+Because SCDFT is a published Apify Actor, it automatically appears in the integration catalogs of:
+
+- n8n – connect SCDFT to hundreds of apps without code.
+- Make – drag‑and‑drop SCDFT into automated workflows.
+- Zapier – trigger SCDFT from thousands of events.
+- Google Sheets and Google Drive – send refined reports as spreadsheets or save directly to your drive.
+- Slack – get notified when a run finishes, or trigger SCDFT directly from a Slack channel.
+- GitHub – create issues automatically when a run fails.
+- LangChain and LlamaIndex – use SCDFT as a tool inside your custom AI agents.
+
+No extra setup is required from the developer. The integrations are ready to use directly from the Apify Actor page. Users simply authenticate with their own accounts and select SCDFT from the list of available Actors.
+
+**Example no‑code workflow (Zapier + Google Sheets + Slack):**
+1. A manager submits rough performance feedback into a Google Sheet.
+2. Zapier detects the new row and sends the raw text to SCDFT.
+3. SCDFT refines it into a clear, structured, and professional report.
+4. Zapier sends the refined report to the HR Manager via Slack.
+
+Just a few clicks — you never touch a single line of code.
+
+---
 
 ## 🧪 Sample Workflow (HR Manager)
 
-1. Collect raw performance notes from managers across the organisation.
-2. Save them into a CSV file with columns originalFeedback and recipientName.
-3. Visit the SCDFT Actor page on Apify Store, upload the CSV, click Run.
-4. Wait a few seconds, then download the output CSV.
-5. Review each improvedFeedback item and deliver it to the employee.
+1. Export your performance review list from your HR system (or ATS) to a CSV file.
+2. Keep the column with the raw feedback (or create one).
+3. Add extra columns: `targetTone` (set to `honest and constructive`), `recipientName`, `context`, and `additionalInstructions` (optional).
+4. Save the file.
+5. Visit the SCDFT Actor page on Apify Store, upload the CSV, click **Run**.
+6. Wait a few seconds, then download the output CSV.
+7. Review each `improvedFeedback` item and deliver it to the employee, or copy it into your performance review document.
 
 Time saved: hours → minutes. Integrity: preserved.
 
@@ -205,17 +230,6 @@ SCDFT is not a mass-feedback tool. It does not take a single template and spray 
 - Regulatory transparency – every output includes an auditHash (SHA‑256) for traceability without storing your data, supporting accountability under frameworks such as the EU AI Act.
 - Failed rows are flagged with status: error in the output; you can retry them after addressing the cause (e.g., network timeout, malformed input).
 - Apify charges – as a Pay Per Event Actor, each processed result incurs a small fee, which is displayed transparently to the user before the run starts. The first 5 seconds of each run are free.
-
----
-
-## 🔌 Integrations (Built‑in by Apify)
-Because SCDFT is a published Apify Actor, it automatically appears in the integration catalogs of:
-- n8n – connect SCDFT to hundreds of apps without code.
-- Make – drag‑and‑drop SCDFT into automated workflows.
-- Zapier – trigger SCDFT from thousands of events.
-- Slack – get notified when a run finishes.
-- GitHub – create issues automatically when a run fails.
-- LangChain and LlamaIndex – use SCDFT as a tool inside your custom AI agents.
 
 ---
 
