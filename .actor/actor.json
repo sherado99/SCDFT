@@ -1,9 +1,9 @@
 {
   "actorSpecification": 1,
-  "name": "stech-evaluation-review-tone-improver",
+  "name": "stech-clarity-driven-feedback-transformer",
   "version": "0.0.1",
   "buildTag": "latest",
-  "description": "Transform harsh, emotional, or unprofessional feedback into honest, constructive, and professional language using Stech AI presence.",
+  "description": "Transform harsh, emotional, or unprofessional feedback into clear, structured, manager-ready reports with total clarity, powered by Stech AI presence.",
   "input": "./input_schema.json",
   "output": "./output_schema.json",
   "storages": {
