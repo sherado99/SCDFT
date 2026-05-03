@@ -123,15 +123,17 @@ async function processFeedback(item) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  let personalization = '';
+  // Teknis & ringkas – biarkan SAPI yang mengatur nada dan kehadiran
+  let prompt = `Refine the following feedback to be ${targetTone}. Keep the original meaning and all critical points.`;
   if (recipientName) {
-    personalization += ` Address the recipient as ${recipientName} respectfully.`;
+    prompt += ` The feedback concerns: ${recipientName}.`;
   }
-
-  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT use emojis. Convert harsh language into professional, actionable text for manager.${personalization}`;
-  if (additional) prompt += ` Additional instructions: ${additional}`;
-  if (context) prompt += `\nThis feedback is a: ${context}.`;
-  
+  if (context) {
+    prompt += ` Context: ${context}.`;
+  }
+  if (additional) {
+    prompt += ` Additional instructions: ${additional}.`;
+  }
   prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
   try {
@@ -169,13 +171,11 @@ async function processFeedback(item) {
 const results = [];
 const running = new Set();
 const queue = [...feedbackList];
-let nextIndex = 0;
 
 while (queue.length > 0 || running.size > 0) {
   while (running.size < maxConcurrency && queue.length > 0) {
     const item = queue.shift();
-    const index = nextIndex++;
-    const promise = processFeedback(item, index).then(res => {
+    const promise = processFeedback(item).then(res => {
       running.delete(promise);
       results.push(res);
     });
@@ -186,10 +186,7 @@ while (queue.length > 0 || running.size > 0) {
   }
 }
 
-results.sort((a, b) => a.index - b.index);
-const finalOutput = results.map(({ index, ...rest }) => rest);
-
-await Actor.pushData(finalOutput);
-console.log(`Processed ${finalOutput.length} feedbacks. Success: ${finalOutput.filter(r => r.status === 'success').length}, Errors: ${finalOutput.filter(r => r.status === 'error').length}`);
+await Actor.pushData(results);
+console.log(`Processed ${results.length} feedbacks. Success: ${results.filter(r => r.status === 'success').length}, Errors: ${results.filter(r => r.status === 'error').length}`);
 
 await Actor.exit();
