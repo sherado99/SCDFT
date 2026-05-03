@@ -128,9 +128,16 @@ async function processFeedback(item) {
     personalization += ` Address the recipient as ${recipientName} respectfully.`;
   }
 
-  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Convert harsh language into professional, actionable text.${personalization}`;
-  if (additional) prompt += ` Additional instructions: ${additional}`;
-  if (context) prompt += `\nThis feedback is a: ${context}.`;
+ let prompt = `Transform the following raw text into a professional, clear, and immediately understandable report.
+
+CRITICAL INSTRUCTIONS:
+- Preserve ALL criticism and negative points. Do NOT soften, sugarcoat, or remove them.
+- NEVER use a letter format. Do NOT start with "Dear...", "Hi...", or any salutation. Do NOT end with "Sincerely" or any signature.
+- NEVER add flattery, fake positivity, or empty encouragement.
+- NEVER use emojis.
+- Output ONLY the transformed report. No introductory or concluding phrases outside the report itself.`;
+if (additional) prompt += `\nAdditional instructions: ${additional}`;
+if (context) prompt += `\nFeedback context: ${context}.`;
   
   prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
