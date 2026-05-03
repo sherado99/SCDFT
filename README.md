@@ -4,7 +4,7 @@
 
 Transform harsh, emotional, or unprofessional feedback into **clear, structured, and actionable reports** — each one refined individually through genuine, ethical connection. Capable of processing many feedback items while maintaining impact and integrity.
 
-SCDFT is a single‑purpose AI (SPAI) Actor on the Apify Store that focuses on one task: ensuring every feedback, complaint, or evaluation is delivered with **total clarity**. It processes batches of 1 to 1,000+ feedback items per run—**each item refined individually, one by one**—accepts CSV or JSON input, lets you pick a different tone for each entry, and exports polished results immediately. No data is stored; no fake praise; just honest, professional, reliable output.
+SCDFT is a single‑purpose AI (SPAI) Actor on the Apify Store that focuses on one task: ensuring every feedback, complaint, or evaluation is delivered with **total clarity**. It processes batches of 1 to 1,00+ feedback items per run—**each item refined individually, one by one**—accepts CSV or JSON input, lets you pick a different tone for each entry, and exports polished results immediately. No data is stored; no fake praise; just honest, professional, reliable output.
 
 > **Market context:** The AI performance review and talent management market is projected to grow at 16.5% CAGR through 2030, reaching $2.1 billion. Organisations increasingly adopt AI for performance feedback, but face a critical gap: AI that only "warms" language often sacrifices honesty, creating feedback that is comfortable but useless. SCDFT fills this gap by embedding Micro Honesty directly into its architecture and focusing on **clarity** over cosmetic tone‑softening.
 
