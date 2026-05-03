@@ -60,6 +60,24 @@ SCDFT is a published Apify Actor, which means it can work either as a simple too
 
 ---
 
+## 🔗 How to Turn SCDFT into an AI Agent (for non‑technical users)
+
+You can turn SCDFT into a **fully autonomous AI Agent** that monitors your HR system, rewrites incoming feedback from managers, and produces structured, manager‑ready reports—all without manual work.
+
+**What you need:**
+- An Apify account (free tier available)
+- An n8n, Make, or Zapier account (free trials available for all)
+- Access to your feedback or HR platform (Google Sheets, Slack, email, etc.)
+
+**How it works:**
+1. **Connect your feedback source** – grant access to the platform (n8n, Make, or Zapier) so it can read incoming feedback from your system (e.g., a Google Sheet where managers submit rough performance notes, or a Slack channel where customer complaints are posted).
+2. **Add SCDFT as the refinement step** – the platform sends the raw feedback text to SCDFT, and SCDFT returns the clear, professional, and formally structured version, complete with an audit hash.
+3. **Route the results** – the refined report is automatically forwarded to the relevant manager, saved back to your HR spreadsheet, or stored for documentation.
+
+**No coding required.** Just a few clicks to connect your feedback source and SCDFT. The platform handles the rest. A complete n8n workflow example is available in the Apify integration guide.
+
+---
+
 ## 🚀 Key Features
 
 - **Batch processing** – refine 1 to 1,000+ feedback items in a single run
@@ -151,6 +169,15 @@ After the run, you get a structured dataset (JSON/CSV). Each row contains:
 ]
 ```
 You can download the dataset as CSV directly from the Apify Console, or access it programmatically via the Apify API.
+
+---
+## ⚙️ Advanced Settings
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| Default Tone | Fallback tone when not specified per item. | honest and constructive |
+| Max Concurrency | Number of feedback items processed in parallel (1‑20). | 5 |
+| Timeout (seconds) | Maximum wait time per feedback request. | 60 |
 
 ---
 
