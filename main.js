@@ -15,14 +15,11 @@ const {
 
 const SCDFT_PROXY_SECRET = process.env.SCDFT_PROXY_SECRET;
 if (!SCDFT_PROXY_SECRET) {
-  // Fallback to SPDET secret if SCDFT secret is not configured
-  if (!process.env.SPDET_PROXY_SECRET) {
-    throw new Error('SCDFT_PROXY_SECRET or SPDET_PROXY_SECRET environment variable is missing');
-  }
+  throw new Error('SCDFT_PROXY_SECRET environment variable is missing');
 }
 
-const SECRET = SPDET_PROXY_SECRET || process.env.SPDET_PROXY_SECRET;
-const API_URL = 'https://stech-api.sheradogilang.workers.dev/spdet';
+const SECRET = SCDFT_PROXY_SECRET;
+const API_URL = 'https://stech-api.sheradogilang.workers.dev/scdft';
 
 // Simple CSV parser
 function parseCSV(content) {
