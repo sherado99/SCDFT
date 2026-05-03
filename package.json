@@ -1,8 +1,8 @@
 {
-  "name": "stech-evaluation-review-tone-improver",
+  "name": "stech-clarity-driven-feedback-transformer",
   "version": "1.0.0",
   "type": "module",
-  "description": "SERTI – Stech Evaluation & Review Tone Improver. Bulk feedback rewriter that ensures every evaluation is honest, constructive, and professional.",
+  "description": "SCDFT – Stech Clarity-Driven Feedback Transformer. Each feedback refined one-by-one, ensuring every evaluation is delivered with total clarity, honesty, and professionalism.",
   "main": "main.js",
   "scripts": {
     "start": "node main.js"
