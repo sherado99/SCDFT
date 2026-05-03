@@ -124,16 +124,18 @@ async function processFeedback(item, index) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  let personalization = '';
+  // Prompt mengikuti pola SPDET: instruksi sederhana, biarkan SAPI membawa jiwa Stech
+  let prompt = `Tolong bantu saya susun catatan ini menjadi laporan yang jelas untuk Manajer. Sampaikan dengan jujur, langsung ke intinya, tanpa menghilangkan kritik.`;
   if (recipientName) {
-    personalization += ` Address the recipient as ${recipientName} respectfully.`;
+    prompt += ` Nama yang bersangkutan: ${recipientName}.`;
   }
-
-  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Convert harsh language into professional, actionable text.${personalization}`;
-  if (additional) prompt += ` Additional instructions: ${additional}`;
-  if (context) prompt += `\nThis feedback is a: ${context}.`;
-  
-  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
+  if (context) {
+    prompt += ` Konteks: ${context}.`;
+  }
+  if (additional) {
+    prompt += ` Instruksi tambahan: ${additional}`;
+  }
+  prompt += `\n\nCatatan:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
