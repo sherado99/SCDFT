@@ -106,11 +106,10 @@ if (feedbackList.length === 0) {
   throw new Error('No valid feedback entries found. Check your input data.');
 }
 
-async function processFeedback(item, index) {
+async function processFeedback(item) {
   const originalFeedback = item.originalFeedback;
   if (!originalFeedback) {
     return {
-      index,
       originalFeedback: null,
       improvedFeedback: "",
       status: 'error',
@@ -124,18 +123,16 @@ async function processFeedback(item, index) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  // Prompt mengikuti pola SPDET: instruksi sederhana, biarkan SAPI membawa jiwa Stech
-  let prompt = `Tolong bantu saya susun catatan ini menjadi laporan yang jelas untuk Manajer. Sampaikan dengan jujur, langsung ke intinya, tanpa menghilangkan kritik.`;
+  let personalization = '';
   if (recipientName) {
-    prompt += ` Nama yang bersangkutan: ${recipientName}.`;
+    personalization += ` Address the recipient as ${recipientName} respectfully.`;
   }
-  if (context) {
-    prompt += ` Konteks: ${context}.`;
-  }
-  if (additional) {
-    prompt += ` Instruksi tambahan: ${additional}`;
-  }
-  prompt += `\n\nCatatan:\n${originalFeedback}`;
+
+  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Convert harsh language into professional, actionable text.${personalization}`;
+  if (additional) prompt += ` Additional instructions: ${additional}`;
+  if (context) prompt += `\nThis feedback is a: ${context}.`;
+  
+  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
@@ -146,7 +143,6 @@ async function processFeedback(item, index) {
     const auditHash = crypto.createHash('sha256').update(improvedFeedback).digest('hex').substring(0, 16);
 
     return {
-      index,
       originalFeedback,
       improvedFeedback,
       toneUsed: targetTone,
@@ -158,8 +154,7 @@ async function processFeedback(item, index) {
     };
   } catch (err) {
     return {
-      index,
-      originalFeedback,
+      originalFeedback: originalFeedback || "",
       improvedFeedback: "",
       status: 'error',
       error: err.message,
