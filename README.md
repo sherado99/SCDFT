@@ -198,7 +198,7 @@ Because SERTI is a published Apify Actor, it automatically appears in the integr
 
 ---
 
-🔗 Links
+## 🔗 Links
 
 - Stech Service on RapidAPI – for production access with higher rate limits
 - Interactive Service Documentation (Postman) – explore and test the service endpoints directly
@@ -207,12 +207,12 @@ Because SERTI is a published Apify Actor, it automatically appears in the integr
 
 ## 📄 License & Disclaimer
 
-This Actor is provided for informational and communication improvement purposes only.
+**This Actor is provided for informational and communication improvement purposes only.
 Stech does not give financial, legal, or medical advice. Always review the output before delivering.
-By using this Actor, you agree that the creator is not liable for any consequences arising from its use.
+By using this Actor, you agree that the creator is not liable for any consequences arising from its use.**
 ---
 The source code of SERTI is publicly available for transparency and trust. All rights are reserved under the **Stech Commercial License (SCL) v2.1**. For full terms, see the [LICENSE](https://github.com/sherado99/Stech/blob/main/LICENSE.md) file in the Stech repository.
 
 ---
 
-Stech – honest, warm, and never pretends to be human. 😊🌿
+**Stech – honest, warm, and never pretends to be human. 😊🌿**
