@@ -13,16 +13,16 @@ const {
   timeout = 60,
 } = input;
 
-const SERTI_PROXY_SECRET = process.env.SERTI_PROXY_SECRET;
-if (!SERTI_PROXY_SECRET) {
-  // Fallback to SETI secret if SERTI secret is not configured
-  if (!process.env.SETI_PROXY_SECRET) {
-    throw new Error('SERTI_PROXY_SECRET or SETI_PROXY_SECRET environment variable is missing');
+const SCDFT_PROXY_SECRET = process.env.SCDFT_PROXY_SECRET;
+if (!SCDFT_PROXY_SECRET) {
+  // Fallback to SPDET secret if SCDFT secret is not configured
+  if (!process.env.SPDET_PROXY_SECRET) {
+    throw new Error('SCDFT_PROXY_SECRET or SPDET_PROXY_SECRET environment variable is missing');
   }
 }
 
-const SECRET = SERTI_PROXY_SECRET || process.env.SETI_PROXY_SECRET;
-const API_URL = 'https://stech-api.sheradogilang.workers.dev/serti';
+const SECRET = SPDET_PROXY_SECRET || process.env.SPDET_PROXY_SECRET;
+const API_URL = 'https://stech-api.sheradogilang.workers.dev/spdet';
 
 // Simple CSV parser
 function parseCSV(content) {
