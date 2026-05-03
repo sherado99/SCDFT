@@ -7,14 +7,14 @@
       "originalFeedback": {
         "type": "string",
         "title": "Original Feedback",
-        "description": "The raw feedback provided by the user.",
+        "description": "The raw feedback, complaint, or evaluation text provided by the user.",
         "example": "His work is a mess. Deadlines keep slipping."
       },
       "improvedFeedback": {
         "type": "string",
         "title": "Improved Feedback",
-        "description": "The feedback refined by SERTI with honest, constructive language.",
-        "example": "Budi is facing serious challenges in consistently meeting deadlines."
+        "description": "The feedback refined by SCDFT with total clarity, honesty, and structured, professional language.",
+        "example": "Andre is facing serious challenges in consistently meeting deadlines."
       },
       "toneUsed": {
         "type": "string",
@@ -33,32 +33,32 @@
         "type": "string",
         "title": "Timestamp",
         "description": "The processing timestamp in ISO 8601 format.",
-        "example": "2026-05-01T10:30:00.000Z"
+        "example": "2026-05-04T10:30:00.000Z"
       },
       "context": {
         "type": "string",
         "title": "Context",
-        "description": "The context of the feedback (e.g., performance review, customer complaint).",
+        "description": "The context of the feedback (e.g., performance review, customer complaint, product review, public report).",
         "example": "performance review"
       },
       "recipientName": {
         "type": "string",
         "title": "Recipient Name",
-        "description": "Name of the recipient.",
-        "example": "Budi"
+        "description": "Name of the recipient, if provided.",
+        "example": "Andre"
       },
       "auditHash": {
         "type": "string",
         "title": "Audit Hash",
         "description": "A unique SHA‑256 hash of the output for audit trail and accountability.",
-        "example": "a1b2c3d4e5f6a7b8c9d0..."
+        "example": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
       }
     },
     "required": ["originalFeedback", "improvedFeedback", "status"]
   },
   "views": {
     "overview": {
-      "title": "SERTI Feedback Refinement Results",
+      "title": "SCDFT Feedback Refinement Results",
       "transformation": {
         "fields": [
           "originalFeedback",
