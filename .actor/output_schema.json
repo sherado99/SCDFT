@@ -1,6 +1,6 @@
 {
   "actorOutputSchemaVersion": 1,
-  "title": "SERTI Result",
+  "title": "SCDFT Result",
   "properties": {
     "originalFeedback": {
       "type": "string",
@@ -10,7 +10,7 @@
     },
     "improvedFeedback": {
       "type": "string",
-      "description": "The feedback refined by SERTI with honest, constructive, and professional language.",
+      "description": "The feedback refined by SCDFT for total clarity: clear, structured, and manager-ready.",
       "title": "Improved Feedback",
       "template": "{{improvedFeedback}}"
     },
