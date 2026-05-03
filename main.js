@@ -124,7 +124,7 @@ async function processFeedback(item) {
   const recipientName = item.recipientName || '';
 
   // Prompt SCDFT yang benar: ubah teks kasar menjadi laporan profesional
-  let prompt = `Transform the following raw text into a professional, clear, and structured report. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Do NOT use letter format (no "Dear...", no "Sincerely..."). Do NOT add apologies, promises, or flattery. Output only the refined report.`;
+  let prompt = `Transform the following raw text into a professional, clear, and structured report, Preserve ALL criticism and negative points, Do NOT sugarcoat, falsify, or soften the truth, Do NOT use emojis, Do NOT use letter format (no "Dear...", no "Sincerely..."), Do NOT add apologies, promises, or flattery, Output only the refined report, Do NOT add apologies, promises (like "We will refund"), or flattery.`;
 
   if (recipientName) prompt += `\nConcerned individual: ${recipientName}`;
   if (context) prompt += `\nFeedback context: ${context}`;
