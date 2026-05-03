@@ -1,6 +1,6 @@
 {
-  "title": "Stech Evaluation & Review Tone Improver (SERTI)",
-  "description": "Rewrite multiple feedback, complaints, or evaluation texts to be honest, constructive, and professional. Upload CSV or provide a JSON array. SERTI preserves all criticism while converting harsh language into actionable, professional text.",
+  "title": "Stech Clarity-Driven Feedback Transformer (SCDFT)",
+  "description": "Transform raw, harsh, or emotional feedback into clear, structured, manager‑ready reports. Each item refined one‑by‑one. Upload CSV or provide a JSON array. SCDFT preserves all criticism and delivers total clarity, converting chaotic language into actionable, professional text.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -21,7 +21,7 @@
           "targetTone": "honest and constructive",
           "additionalInstructions": "Focus on actionable steps",
           "context": "performance review",
-          "recipientName": "Budi"
+          "recipientName": "Andre"
         }
       ],
       "items": {
@@ -52,7 +52,7 @@
           "recipientName": {
             "type": "string",
             "title": "Recipient Name (optional)",
-            "description": "Name of the recipient. If provided, SERTI will address them respectfully."
+            "description": "Name of the recipient. If provided, SCDFT will address them respectfully."
           }
         },
         "required": ["originalFeedback"]
