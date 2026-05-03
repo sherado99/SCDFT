@@ -111,7 +111,7 @@ async function processFeedback(item) {
   if (!originalFeedback) {
     return {
       originalFeedback: null,
-      improvedFeedback: "",
+      improvedFeedback: '',
       status: 'error',
       error: 'Missing originalFeedback field',
       timestamp: new Date().toISOString(),
@@ -123,21 +123,14 @@ async function processFeedback(item) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  let personalization = '';
-  if (recipientName) {
-    personalization += ` Address the recipient as ${recipientName} respectfully.`;
-  }
+  // Prompt SCDFT yang benar: ubah teks kasar menjadi laporan profesional
+  let prompt = `Transform the following raw text into a professional, clear, and structured report. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Do NOT use letter format (no "Dear...", no "Sincerely..."). Do NOT add apologies, promises, or flattery. Output only the refined report.`;
 
-let prompt = `Transform this raw feedback into a clear, constructive, and human-readable text.
-
-CRITICAL:
-- Do NOT use letter format (no "Dear...", no "Sincerely").
-- Preserve all criticism. Do NOT sugarcoat.
-- Do NOT use emojis.`;
-if (additional) prompt += `\nAdditional instructions: ${additional}`;
-if (context) prompt += `\nFeedback context: ${context}.`;
+  if (recipientName) prompt += `\nConcerned individual: ${recipientName}`;
+  if (context) prompt += `\nFeedback context: ${context}`;
+  if (additional) prompt += `\nAdditional instructions: ${additional}`;
   
-  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
+  prompt += `\n\nRaw text:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
@@ -159,8 +152,8 @@ if (context) prompt += `\nFeedback context: ${context}.`;
     };
   } catch (err) {
     return {
-      originalFeedback: originalFeedback || "",
-      improvedFeedback: "",
+      originalFeedback: originalFeedback || '',
+      improvedFeedback: '',
       status: 'error',
       error: err.message,
       timestamp: new Date().toISOString(),
