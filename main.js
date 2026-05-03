@@ -128,7 +128,7 @@ async function processFeedback(item) {
     personalization += ` Address the recipient as ${recipientName} respectfully.`;
   }
 
-  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT sugarcoat, falsify, or soften the truth. Do NOT use emojis. Convert harsh language into professional, actionable text.${personalization}`;
+  let prompt = `Refine the following feedback to be ${targetTone}. Preserve ALL criticism and negative points. Do NOT use emojis. Convert harsh language into professional, actionable text for manager.${personalization}`;
   if (additional) prompt += ` Additional instructions: ${additional}`;
   if (context) prompt += `\nThis feedback is a: ${context}.`;
   
