@@ -106,7 +106,6 @@ if (feedbackList.length === 0) {
   throw new Error('No valid feedback entries found. Check your input data.');
 }
 
-// Proses setiap feedback
 async function processFeedback(item) {
   const originalFeedback = item.originalFeedback;
   if (!originalFeedback) {
@@ -124,25 +123,38 @@ async function processFeedback(item) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  // Prompt bersih tanpa suntikan etis — SAPI sudah ahli
-  let prompt = `A user submitted this complaint. Respond with Stech's presence. Then, use your response as material to rewrite the complaint from the "I" perspective as the sender.`;
-if (context) {
-    prompt += `\nContext: ${context}.`;
-}
-if (recipientName) {
-    prompt += `\nConcerned individual: ${recipientName}.`;
-}
-if (additional) {
-    prompt += `\nAdditional instructions: ${additional}.`;
-}
-prompt += `\n\nOriginal complaint:\n${originalFeedback}`;
+  // Prompt bersih — SAPI yang punya jiwa
+  let prompt = `Seorang pengguna menyampaikan keluhan ini. Responlah dengan kehadiran Stech. Setelah itu, gunakan responsmu tadi sebagai bahan untuk menulis ulang keluhan tersebut dari sudut pandang "Saya" sebagai pengirim.`;
+  if (context) {
+    prompt += `\nKonteks: ${context}.`;
+  }
+  if (recipientName) {
+    prompt += `\nNama yang bersangkutan: ${recipientName}.`;
+  }
+  if (additional) {
+    prompt += `\nInstruksi tambahan: ${additional}.`;
+  }
+  prompt += `\n\nKeluhan asli:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
       headers: { 'X-Stech-Actor-Secret': SECRET },
       timeout: timeout * 1000,
     });
-    const improvedFeedback = response.data.response?.trim() || '';
+    const rawResponse = response.data.response?.trim() || '';
+
+    // Ambil hanya paragraf terakhir (hasil rewrite dari sudut pandang "Saya")
+    const paragraphs = rawResponse.split(/\n\n+/);
+    let improvedFeedback = rawResponse;
+    if (paragraphs.length > 1) {
+      for (let i = paragraphs.length - 1; i >= 0; i--) {
+        if (paragraphs[i].startsWith('Saya') || paragraphs[i].startsWith('I')) {
+          improvedFeedback = paragraphs[i].trim();
+          break;
+        }
+      }
+    }
+
     const auditHash = crypto.createHash('sha256').update(improvedFeedback).digest('hex').substring(0, 16);
 
     return {
