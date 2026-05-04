@@ -5,48 +5,57 @@
     "originalFeedback": {
       "type": "string",
       "description": "The original raw feedback, complaint, or evaluation text.",
-      "title": "Original Feedback"
+      "title": "Original Feedback",
+      "template": "{{originalFeedback}}"
     },
     "improvedFeedback": {
       "type": "string",
       "description": "The clarity‑driven refinement, written from the 'I' perspective.",
-      "title": "Improved Feedback"
+      "title": "Improved Feedback",
+      "template": "{{improvedFeedback}}"
     },
     "toneUsed": {
       "type": "string",
-      "description": "The tone applied (honest and constructive, empathetic, etc.).",
-      "title": "Tone Used"
+      "description": "The tone applied.",
+      "title": "Tone Used",
+      "template": "{{toneUsed}}"
     },
     "status": {
       "type": "string",
       "description": "'success' or 'error'.",
-      "title": "Status"
+      "title": "Status",
+      "template": "{{status}}"
     },
     "error": {
       "type": "string",
       "description": "Error message if status is 'error'.",
-      "title": "Error"
+      "title": "Error",
+      "template": "{{error}}"
     },
     "timestamp": {
       "type": "string",
       "description": "Processing timestamp in ISO 8601.",
-      "title": "Timestamp"
+      "title": "Timestamp",
+      "template": "{{timestamp}}"
     },
     "context": {
       "type": "string",
       "title": "Context",
-      "description": "Feedback context if provided (performance review, customer complaint, etc.)."
+      "description": "Feedback context if provided.",
+      "template": "{{context}}"
     },
     "recipientName": {
       "type": "string",
       "title": "Recipient Name",
-      "description": "The person the feedback concerns, if provided."
+      "description": "The person the feedback concerns, if provided.",
+      "template": "{{recipientName}}"
     },
     "auditHash": {
       "type": "string",
       "title": "Audit Hash",
-      "description": "SHA‑256 hash of the output for audit trail."
+      "description": "SHA‑256 hash of the output for audit trail.",
+      "template": "{{auditHash}}"
     }
   },
-  "required": ["originalFeedback", "improvedFeedback", "status", "timestamp"]
+  "required": ["originalFeedback", "improvedFeedback", "status"]
 }
