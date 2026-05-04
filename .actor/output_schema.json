@@ -4,52 +4,49 @@
   "properties": {
     "originalFeedback": {
       "type": "string",
-      "description": "The original feedback provided by the user.",
-      "title": "Original Feedback",
-      "template": "{{originalFeedback}}"
+      "description": "The original raw feedback, complaint, or evaluation text.",
+      "title": "Original Feedback"
     },
     "improvedFeedback": {
       "type": "string",
-      "description": "The feedback refined by SCDFT for total clarity: clear, structured, and manager-ready.",
-      "title": "Improved Feedback",
-      "template": "{{improvedFeedback}}"
+      "description": "The clarity‑driven refinement, written from the 'I' perspective.",
+      "title": "Improved Feedback"
     },
     "toneUsed": {
       "type": "string",
-      "description": "The tone applied (e.g., honest and constructive, professional and actionable).",
-      "title": "Tone Used",
-      "template": "{{toneUsed}}"
+      "description": "The tone applied (honest and constructive, empathetic, etc.).",
+      "title": "Tone Used"
     },
     "status": {
       "type": "string",
-      "description": "The success or failure status of the processing (e.g., 'success' or 'error').",
-      "title": "Status",
-      "template": "{{status}}"
+      "description": "'success' or 'error'.",
+      "title": "Status"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if status is 'error'.",
+      "title": "Error"
     },
     "timestamp": {
       "type": "string",
-      "description": "The processing timestamp in ISO 8601 format.",
-      "title": "Timestamp",
-      "template": "{{timestamp}}"
+      "description": "Processing timestamp in ISO 8601.",
+      "title": "Timestamp"
     },
     "context": {
       "type": "string",
       "title": "Context",
-      "description": "The context of the feedback (if provided).",
-      "template": "{{context}}"
+      "description": "Feedback context if provided (performance review, customer complaint, etc.)."
     },
     "recipientName": {
       "type": "string",
       "title": "Recipient Name",
-      "description": "The recipient name (if provided).",
-      "template": "{{recipientName}}"
+      "description": "The person the feedback concerns, if provided."
     },
     "auditHash": {
       "type": "string",
       "title": "Audit Hash",
-      "description": "A unique SHA‑256 hash of the output for audit trail and accountability.",
-      "template": "{{auditHash}}"
+      "description": "SHA‑256 hash of the output for audit trail."
     }
   },
-  "required": ["originalFeedback", "improvedFeedback", "status"]
+  "required": ["originalFeedback", "improvedFeedback", "status", "timestamp"]
 }
