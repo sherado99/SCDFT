@@ -123,16 +123,23 @@ async function processFeedback(item) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  // Clean prompt — SAPI holds the soul
-  let prompt = `A user submitted this complaint. Respond with Stech's presence. Then, use your response as material to rewrite the complaint from the "I" perspective as the sender.`;
+  // Clean prompt — SAPI holds the soul, returns structured JSON
+  let prompt = `A user submitted this complaint. Respond with Stech's presence. Then, use your response as material to rewrite the complaint from the "I" perspective as the sender.
+
+Return your response ONLY as a valid JSON object with these three keys:
+"presence_response": your initial presence response,
+"transition_phrase": the transition phrase you used,
+"rewritten_complaint": the final rewritten complaint from the "I" perspective as the sender.
+
+Do not include any text outside the JSON object.`;
   if (context) {
-    prompt += `\nContext: ${context}.`;
+    prompt += `\n\nContext: ${context}.`;
   }
   if (recipientName) {
-    prompt += `\nConcerned individual: ${recipientName}.`;
+    prompt += `\n\nConcerned individual: ${recipientName}.`;
   }
   if (additional) {
-    prompt += `\nAdditional instructions: ${additional}.`;
+    prompt += `\n\nAdditional instructions: ${additional}.`;
   }
   prompt += `\n\nOriginal complaint:\n${originalFeedback}`;
 
@@ -143,40 +150,21 @@ async function processFeedback(item) {
     });
     const rawResponse = response.data.response?.trim() || '';
 
-    // Extract only the rewritten text from the "I" perspective
-    let improvedFeedback = rawResponse;
+    // Parse JSON to extract only the rewritten complaint
+    let improvedFeedback = rawResponse; // fallback
 
-    const presencePatterns = [
-      "I'm here to help",
-      "I'm here to listen",
-      "I understand",
-      "I apologize",
-      "I want to assure",
-      "I am writing to",
-      "I will now rewrite",
-      "Here's a rewritten",
-      "From the \"I\" perspective",
-      "Keluhan dari sudut pandang",
-      "Sekarang, saya akan menulis ulang",
-    ];
-
-    const paragraphs = rawResponse.split(/\n\n+/);
-    for (const para of paragraphs) {
-      const trimmed = para.trim();
-      if (trimmed.startsWith('I ') || trimmed.startsWith('I,')) {
-        const isPresence = presencePatterns.some(pattern => trimmed.startsWith(pattern));
-        if (!isPresence) {
-          improvedFeedback = trimmed;
-          break;
+    try {
+      // Try to extract JSON from the response (in case extra text is present)
+      const jsonMatch = rawResponse.match(/(\{[\s\S]*\})/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[1]);
+        if (parsed.rewritten_complaint) {
+          improvedFeedback = parsed.rewritten_complaint.trim();
         }
       }
-      if (trimmed.startsWith('Saya ')) {
-        const isPresence = presencePatterns.some(pattern => trimmed.startsWith(pattern));
-        if (!isPresence) {
-          improvedFeedback = trimmed;
-          break;
-        }
-      }
+    } catch (parseError) {
+      // If JSON parsing fails, keep raw response as fallback
+      console.log('JSON parsing failed, using raw response as fallback.');
     }
 
     const auditHash = crypto.createHash('sha256').update(improvedFeedback).digest('hex').substring(0, 16);
