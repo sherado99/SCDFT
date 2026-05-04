@@ -106,12 +106,13 @@ if (feedbackList.length === 0) {
   throw new Error('No valid feedback entries found. Check your input data.');
 }
 
+// Proses setiap feedback
 async function processFeedback(item) {
   const originalFeedback = item.originalFeedback;
   if (!originalFeedback) {
     return {
       originalFeedback: null,
-      improvedFeedback: '',
+      improvedFeedback: "",
       status: 'error',
       error: 'Missing originalFeedback field',
       timestamp: new Date().toISOString(),
@@ -123,23 +124,18 @@ async function processFeedback(item) {
   const context = item.context || '';
   const recipientName = item.recipientName || '';
 
-  // Prompt SCDFT yang sudah diperbaiki — lebih tegas dan terstruktur
-  let prompt = `Transform the following raw text into a professional, clear, and structured report.
-
-CRITICAL RULES:
-- Preserve ALL criticism and negative points.
-- Do NOT sugarcoat, falsify, or soften the truth.
-- Do NOT use emojis.
-- Do NOT use letter format (no "Dear...", no "Sincerely...").
-- Do NOT write from a first-person perspective (no "I apologize", "We will", "I assure you").
-- Do NOT add apologies, promises, or flattery.
-- Output only the refined report.`;
-
-  if (recipientName) prompt += `\nConcerned individual: ${recipientName}`;
-  if (context) prompt += `\nFeedback context: ${context}`;
-  if (additional) prompt += `\nAdditional instructions: ${additional}`;
-  
-  prompt += `\n\nRaw text:\n${originalFeedback}`;
+  // Prompt bersih tanpa suntikan etis — SAPI sudah ahli
+  let prompt = `A user submitted this complaint. Respond with Stech's presence. Then, use your response as material to rewrite the complaint from the "I" perspective as the sender.`;
+if (context) {
+    prompt += `\nContext: ${context}.`;
+}
+if (recipientName) {
+    prompt += `\nConcerned individual: ${recipientName}.`;
+}
+if (additional) {
+    prompt += `\nAdditional instructions: ${additional}.`;
+}
+prompt += `\n\nOriginal complaint:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
@@ -161,8 +157,8 @@ CRITICAL RULES:
     };
   } catch (err) {
     return {
-      originalFeedback: originalFeedback || '',
-      improvedFeedback: '',
+      originalFeedback: originalFeedback || "",
+      improvedFeedback: "",
       status: 'error',
       error: err.message,
       timestamp: new Date().toISOString(),
@@ -176,13 +172,11 @@ CRITICAL RULES:
 const results = [];
 const running = new Set();
 const queue = [...feedbackList];
-let nextIndex = 0;
 
 while (queue.length > 0 || running.size > 0) {
   while (running.size < maxConcurrency && queue.length > 0) {
     const item = queue.shift();
-    const index = nextIndex++;
-    const promise = processFeedback(item, index).then(res => {
+    const promise = processFeedback(item).then(res => {
       running.delete(promise);
       results.push(res);
     });
@@ -193,10 +187,7 @@ while (queue.length > 0 || running.size > 0) {
   }
 }
 
-results.sort((a, b) => a.index - b.index);
-const finalOutput = results.map(({ index, ...rest }) => rest);
-
-await Actor.pushData(finalOutput);
-console.log(`Processed ${finalOutput.length} feedbacks. Success: ${finalOutput.filter(r => r.status === 'success').length}, Errors: ${finalOutput.filter(r => r.status === 'error').length}`);
+await Actor.pushData(results);
+console.log(`Processed ${results.length} feedbacks. Success: ${results.filter(r => r.status === 'success').length}, Errors: ${results.filter(r => r.status === 'error').length}`);
 
 await Actor.exit();
