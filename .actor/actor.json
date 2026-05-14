@@ -1,12 +1,16 @@
 {
   "actorSpecification": 1,
-  "name": "stech-clarity-driven-feedback-transformer",
-  "version": "0.0.1",
+  "name": "Stech Clarity-Driven Feedback Transformer (SCDFT)",
+  "version": "0.0.2",
   "buildTag": "latest",
-  "description": "Transform harsh, emotional, or unprofessional feedback into clear, structured, manager-ready reports with total clarity, powered by Stech AI presence.",
+  "description": "Transform harsh, emotional, or unprofessional feedback into clear, structured, manager-ready reports — each one refined individually through genuine, ethical connection. Capable of processing many feedback items while maintaining impact and integrity.",
   "input": "./input_schema.json",
   "output": "./output_schema.json",
   "storages": {
     "dataset": "./dataset_schema.json"
+  },
+  "seo": {
+    "name": "SCDFT – AI Clarity-Driven Feedback Transformer",
+    "description": "Transform harsh feedback into clear, structured, manager-ready reports. Batch CSV/JSON processing. Stateless, private, no data stored. Built for HR, Customer Service, and Product teams."
   }
 }
