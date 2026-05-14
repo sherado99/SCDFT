@@ -67,12 +67,6 @@
       "title": "Recipient Email",
       "description": "Email address of the recipient.",
       "template": "{{recipientEmail}}"
-    },
-    "context": {
-      "type": "string",
-      "title": "Context",
-      "description": "The context of the feedback (e.g., performance review, customer complaint, product review, public report).",
-      "template": "{{context}}"
     }
   },
   "required": ["originalFeedback", "improvedFeedback", "status", "auditHash", "download_docx", "download_pdf"]
