@@ -35,26 +35,56 @@
         "description": "The processing timestamp in ISO 8601 format.",
         "example": "2026-05-04T10:30:00.000Z"
       },
+      "auditHash": {
+        "type": "string",
+        "title": "Audit Hash",
+        "description": "SHA-256 hash of originalFeedback + improvedFeedback + timestamp for audit trail and EU AI Act compliance.",
+        "example": "a3f2b8c9d1e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9"
+      },
+      "download_docx": {
+        "type": "string",
+        "title": "Download DOCX",
+        "description": "URL to download the improved feedback as a Microsoft Word (.docx) file.",
+        "example": "https://api.apify.com/v2/key-value-stores/STORE_ID/records/feedback_1_a3f2b8c9.docx"
+      },
+      "download_pdf": {
+        "type": "string",
+        "title": "Download PDF",
+        "description": "URL to download the improved feedback as a PDF file.",
+        "example": "https://api.apify.com/v2/key-value-stores/STORE_ID/records/feedback_1_a3f2b8c9.pdf"
+      },
+      "originalSubject": {
+        "type": "string",
+        "title": "Original Subject",
+        "description": "Original feedback subject line.",
+        "example": "Performance Review Q1"
+      },
+      "recipientName": {
+        "type": "string",
+        "title": "Recipient Name",
+        "description": "Name of the recipient.",
+        "example": "Andre"
+      },
+      "senderName": {
+        "type": "string",
+        "title": "Sender Name",
+        "description": "Name of the sender.",
+        "example": "Manager"
+      },
+      "recipientEmail": {
+        "type": "string",
+        "title": "Recipient Email",
+        "description": "Email address of the recipient.",
+        "example": "andre@example.com"
+      },
       "context": {
         "type": "string",
         "title": "Context",
         "description": "The context of the feedback (e.g., performance review, customer complaint, product review, public report).",
         "example": "performance review"
-      },
-      "recipientName": {
-        "type": "string",
-        "title": "Recipient Name",
-        "description": "Name of the recipient, if provided.",
-        "example": "Andre"
-      },
-      "auditHash": {
-        "type": "string",
-        "title": "Audit Hash",
-        "description": "A unique SHA‑256 hash of the output for audit trail and accountability.",
-        "example": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
       }
     },
-    "required": ["originalFeedback", "improvedFeedback", "status"]
+    "required": ["originalFeedback", "improvedFeedback", "status", "auditHash", "download_docx", "download_pdf"]
   },
   "views": {
     "overview": {
@@ -66,9 +96,14 @@
           "toneUsed",
           "status",
           "timestamp",
-          "context",
+          "auditHash",
+          "download_docx",
+          "download_pdf",
+          "originalSubject",
           "recipientName",
-          "auditHash"
+          "senderName",
+          "recipientEmail",
+          "context"
         ]
       },
       "display": {
@@ -79,9 +114,14 @@
           "toneUsed": { "label": "Tone", "format": "text" },
           "status": { "label": "Status", "format": "text" },
           "timestamp": { "label": "Time", "format": "text" },
-          "context": { "label": "Context", "format": "text" },
+          "auditHash": { "label": "Audit Hash", "format": "text" },
+          "download_docx": { "label": "Download DOCX", "format": "text" },
+          "download_pdf": { "label": "Download PDF", "format": "text" },
+          "originalSubject": { "label": "Original Subject", "format": "text" },
           "recipientName": { "label": "Recipient", "format": "text" },
-          "auditHash": { "label": "Audit Hash", "format": "text" }
+          "senderName": { "label": "Sender", "format": "text" },
+          "recipientEmail": { "label": "Recipient Email", "format": "text" },
+          "context": { "label": "Context", "format": "text" }
         }
       }
     }
