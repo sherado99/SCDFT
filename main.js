@@ -232,12 +232,12 @@ async function processFeedback(item, index) {
     personalization += ` Sign the feedback as "${senderName}".`;
   }
 
-  let prompt = `Rewrite the following feedback in English to be while keeping all criticism intact.${personalization}`;
-  if (additional) prompt += ` ${additional}`;
-  if (originalSubject) {
-    prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
-  }
-  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
+let prompt = `Rewrite the following feedback in English.${personalization}`;
+if (additional) prompt += ` ${additional}`;
+if (originalSubject) {
+  prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
+}
+prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
