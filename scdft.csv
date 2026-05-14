@@ -1,3 +1,3 @@
-originalFeedback,targetTone,additionalInstructions,context,recipientName
-"This thing is a piece of crap. Fell apart in two weeks. DO NOT BUY THIS GARBAGE.",professional and actionable,"Convert into a formal product defect report with urgency",product review,Lars
+originalFeedback,additionalInstructions,originalSubject,recipientName,senderName,recipientEmail
+"This thing is a piece of crap. Fell apart in two weeks. DO NOT BUY THIS GARBAGE.",Convert into a formal product defect report with urgency,Product Complaint,Lars
 
