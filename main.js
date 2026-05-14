@@ -1,14 +1,91 @@
 import { Actor } from 'apify';
 import axios from 'axios';
 import crypto from 'crypto';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx';
+import PDFDocument from 'pdfkit';
 
 await Actor.init();
+
+// ========== HELPERS ==========
+
+function calculateHash(originalFeedback, improvedFeedback, timestamp) {
+  const data = `${originalFeedback}|${improvedFeedback}|${timestamp}`;
+  return crypto.createHash('sha256').update(data).digest('hex');
+}
+
+async function generateDOCX(recipientName, improvedFeedback, auditHash) {
+  const doc = new Document({
+    sections: [{
+      properties: {},
+      children: [
+        new Paragraph({
+          text: `For: ${recipientName || 'Recipient'}`,
+          heading: HeadingLevel.HEADING_2,
+          spacing: { after: 120 },
+        }),
+        new Paragraph({
+          text: improvedFeedback,
+          spacing: { after: 300 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `Verification Code: ${auditHash}`,
+              italics: true,
+              size: 18,
+              color: '888888',
+            }),
+          ],
+        }),
+      ],
+    }],
+  });
+  return await Packer.toBuffer(doc);
+}
+
+async function generatePDF(recipientName, improvedFeedback, auditHash) {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ margin: 50 });
+    const chunks = [];
+    doc.on('data', chunk => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+
+    doc.fontSize(14).text(`SCDFT – Stech Clarity-Driven Feedback Transformer`, { align: 'center' });
+    doc.moveDown(0.5);
+    doc.fontSize(11).text(`Addressed to: ${recipientName || 'Recipient'}`);
+    doc.fontSize(11).text(`Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`);
+    doc.moveDown(0.5);
+    doc.fontSize(11).text(improvedFeedback, { align: 'justify', lineGap: 4 });
+    doc.moveDown(1);
+    doc.fontSize(7).text(`Verification Code: ${auditHash}`, { align: 'center' });
+    doc.end();
+  });
+}
+
+async function saveFileToKVS(filename, buffer, contentType) {
+  const store = await Actor.openKeyValueStore();
+  await store.setValue(filename, buffer, { contentType });
+  const runId = process.env.APIFY_RUN_ID || 'default';
+  const baseUrl = `https://api.apify.com/v2/key-value-stores/${store.id}/records/${filename}?disableRedirect=true`;
+  return baseUrl;
+}
+
+function removeSubjectFromBody(body, subject) {
+  if (!subject || !body) return body;
+  const escapedSubject = subject.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const subjectPattern = new RegExp(`^(Subject\\s*:\\s*)?\\s*${escapedSubject}\\s*\\n*`, 'i');
+  return body.replace(subjectPattern, '').trim();
+}
+
+// ========== INPUT CONFIGURATION ==========
 
 const input = await Actor.getInput();
 const {
   csvFile,
   feedbacks,
-  defaultTone = 'honest and constructive',
+  columnMapping,
+  rejectionTemplate,
   maxConcurrency = 5,
   timeout = 60,
 } = input;
@@ -18,10 +95,10 @@ if (!SCDFT_PROXY_SECRET) {
   throw new Error('SCDFT_PROXY_SECRET environment variable is missing');
 }
 
-const SECRET = SCDFT_PROXY_SECRET;
 const API_URL = 'https://stech-api.sheradogilang.workers.dev/scdft';
 
-// Simple CSV parser
+// ========== CSV PARSER ==========
+
 function parseCSV(content) {
   const lines = content.trim().split(/\r?\n/);
   if (lines.length === 0) return [];
@@ -66,9 +143,20 @@ function parseCSV(content) {
   return result;
 }
 
+function applyMappingAndTemplate(row, mapping, template) {
+  if (!template || !mapping) return null;
+  let filled = template;
+  for (const [placeholder, columnName] of Object.entries(mapping)) {
+    const value = row[columnName] || '';
+    filled = filled.replace(new RegExp(`{${placeholder}}`, 'g'), value);
+  }
+  return filled;
+}
+
+// ========== BUILD FEEDBACK LIST ==========
+
 let feedbackList = [];
 
-// 1. Read from CSV file
 if (csvFile && typeof csvFile === 'string') {
   let fileContent = null;
   if (csvFile.startsWith('FILE-UPLOAD:')) {
@@ -86,19 +174,28 @@ if (csvFile && typeof csvFile === 'string') {
     throw new Error('CSV file is empty or could not be parsed.');
   }
 
-  feedbackList = rows.filter(row => row.originalFeedback).map(row => ({
-    originalFeedback: row.originalFeedback,
-    targetTone: row.targetTone || defaultTone,
-    additionalInstructions: row.additionalInstructions || '',
-    context: row.context || '',
-    recipientName: row.recipientName || row.recipient_name || row.name || '',
-  }));
-}
-// 2. Read from JSON array
-else if (Array.isArray(feedbacks) && feedbacks.length > 0) {
+  if (columnMapping && rejectionTemplate && Object.keys(columnMapping).length > 0) {
+    feedbackList = rows.map(row => ({
+      originalFeedback: applyMappingAndTemplate(row, columnMapping, rejectionTemplate),
+      additionalInstructions: row.additionalInstructions || '',
+      originalSubject: row.originalSubject || row.subject || '',
+      recipientName: row.recipientName || row.recipient_name || row.recipient || row.name || '',
+      senderName: row.senderName || row.sender_name || row.sender || '',
+      recipientEmail: row.recipientEmail || row.recipient_email || row.email || '',
+    })).filter(item => item.originalFeedback);
+  } else {
+    feedbackList = rows.filter(row => row.originalFeedback).map(row => ({
+      originalFeedback: row.originalFeedback,
+      additionalInstructions: row.additionalInstructions || '',
+      originalSubject: row.originalSubject || row.subject || '',
+      recipientName: row.recipientName || row.recipient_name || row.recipient || row.name || '',
+      senderName: row.senderName || row.sender_name || row.sender || '',
+      recipientEmail: row.recipientEmail || row.recipient_email || row.email || '',
+    }));
+  }
+} else if (Array.isArray(feedbacks) && feedbacks.length > 0) {
   feedbackList = feedbacks;
-}
-else {
+} else {
   throw new Error('No input provided. Please either upload a CSV file or provide an array of feedbacks.');
 }
 
@@ -106,7 +203,9 @@ if (feedbackList.length === 0) {
   throw new Error('No valid feedback entries found. Check your input data.');
 }
 
-async function processFeedback(item) {
+// ========== PROCESS EACH FEEDBACK ==========
+
+async function processFeedback(item, index) {
   const originalFeedback = item.originalFeedback;
   if (!originalFeedback) {
     return {
@@ -115,69 +214,93 @@ async function processFeedback(item) {
       status: 'error',
       error: 'Missing originalFeedback field',
       timestamp: new Date().toISOString(),
+      auditHash: '',
     };
   }
 
-  const targetTone = item.targetTone || defaultTone;
   const additional = item.additionalInstructions || '';
-  const context = item.context || '';
+  const originalSubject = item.originalSubject || '';
   const recipientName = item.recipientName || '';
+  const senderName = item.senderName || '';
+  const recipientEmail = item.recipientEmail || '';
 
-  // Clean prompt — SAPI holds the soul, returns structured JSON
-  let prompt = `A user submitted this complaint. Respond with Stech's presence. Then, use your response as material to rewrite the complaint from the "I" perspective as the sender.
-
-Return your response ONLY as a valid JSON object with these three keys:
-"presence_response": your initial presence response,
-"transition_phrase": the transition phrase you used,
-"rewritten_complaint": the final rewritten complaint from the "I" perspective as the sender.
-
-Do not include any text outside the JSON object.`;
-  if (context) {
-    prompt += `\n\nContext: ${context}.`;
-  }
+  let personalization = '';
   if (recipientName) {
-    prompt += `\n\nConcerned individual: ${recipientName}.`;
+    personalization += ` Address the feedback to "${recipientName}".`;
   }
-  if (additional) {
-    prompt += `\n\nAdditional instructions: ${additional}.`;
+  if (senderName) {
+    personalization += ` Sign the feedback as "${senderName}".`;
   }
-  prompt += `\n\nOriginal complaint:\n${originalFeedback}`;
+
+  let prompt = `Rewrite the following feedback in English to be clear, structured, and professional while keeping all criticism intact.${personalization}`;
+  if (additional) prompt += ` ${additional}`;
+  if (originalSubject) {
+    prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
+  }
+  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
-      headers: { 'X-Stech-Actor-Secret': SECRET },
+      headers: { 'X-Stech-Actor-Secret': SCDFT_PROXY_SECRET },
       timeout: timeout * 1000,
     });
-    const rawResponse = response.data.response?.trim() || '';
-
-    // Parse JSON to extract only the rewritten complaint
-    let improvedFeedback = rawResponse; // fallback
-
-    try {
-      // Try to extract JSON from the response (in case extra text is present)
-      const jsonMatch = rawResponse.match(/(\{[\s\S]*\})/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[1]);
-        if (parsed.rewritten_complaint) {
-          improvedFeedback = parsed.rewritten_complaint.trim();
-        }
-      }
-    } catch (parseError) {
-      // If JSON parsing fails, keep raw response as fallback
-      console.log('JSON parsing failed, using raw response as fallback.');
+    let improvedFeedback = response.data.response?.trim() || '';
+    if (originalSubject) {
+      improvedFeedback = removeSubjectFromBody(improvedFeedback, originalSubject);
     }
 
-    const auditHash = crypto.createHash('sha256').update(improvedFeedback).digest('hex').substring(0, 16);
+    // Micro Honesty Guard for Feedback
+    const sugarcoatPatterns = [
+      'excellent', 'outstanding', 'perfect', 'flawless', 'amazing',
+      'best employee', 'top performer', 'exceptional talent',
+      'no issues', 'no problems', 'nothing to improve',
+      'always', 'never', 'every time',
+      'we are very impressed', 'we couldn\'t be happier'
+    ];
+    const lowerImproved = improvedFeedback.toLowerCase();
+    const lowerOriginal = originalFeedback.toLowerCase();
+    const foundPraise = sugarcoatPatterns.find(p => lowerImproved.includes(p));
+    const praiseInOriginal = foundPraise ? lowerOriginal.includes(foundPraise) : false;
+    if (foundPraise && !praiseInOriginal) {
+      return {
+        originalFeedback,
+        improvedFeedback: "",
+        status: 'error',
+        error: `Output blocked by Micro Honesty filter: it contained "${foundPraise}" which was not present in the original feedback.`,
+        timestamp: new Date().toISOString(),
+        auditHash: '',
+        ...(originalSubject && { originalSubject }),
+        ...(recipientName && { recipientName }),
+        ...(senderName && { senderName }),
+        ...(recipientEmail && { recipientEmail }),
+      };
+    }
+
+    const timestamp = new Date().toISOString();
+    const auditHash = calculateHash(originalFeedback, improvedFeedback, timestamp);
+
+    // ---- MULTI-FORMAT FILE GENERATION ----
+    const docxBuffer = await generateDOCX(recipientName, improvedFeedback, auditHash);
+    const pdfBuffer = await generatePDF(recipientName, improvedFeedback, auditHash);
+
+    const docxFilename = `feedback_${index + 1}_${auditHash.substring(0, 8)}.docx`;
+    const pdfFilename = `feedback_${index + 1}_${auditHash.substring(0, 8)}.pdf`;
+
+    const docxUrl = await saveFileToKVS(docxFilename, docxBuffer, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    const pdfUrl = await saveFileToKVS(pdfFilename, pdfBuffer, 'application/pdf');
 
     return {
       originalFeedback,
       improvedFeedback,
-      toneUsed: targetTone,
       status: 'success',
-      timestamp: new Date().toISOString(),
-      ...(context && { context }),
-      ...(recipientName && { recipientName }),
+      timestamp,
       auditHash,
+      download_docx: docxUrl,
+      download_pdf: pdfUrl,
+      ...(originalSubject && { originalSubject }),
+      ...(recipientName && { recipientName }),
+      ...(senderName && { senderName }),
+      ...(recipientEmail && { recipientEmail }),
     };
   } catch (err) {
     return {
@@ -186,21 +309,27 @@ Do not include any text outside the JSON object.`;
       status: 'error',
       error: err.message,
       timestamp: new Date().toISOString(),
-      ...(context && { context }),
-      ...(recipientName && { recipientName }),
       auditHash: '',
+      ...(originalSubject && { originalSubject }),
+      ...(recipientName && { recipientName }),
+      ...(senderName && { senderName }),
+      ...(recipientEmail && { recipientEmail }),
     };
   }
 }
 
+// ========== PARALLEL EXECUTION ==========
+
 const results = [];
 const running = new Set();
 const queue = [...feedbackList];
+let nextIndex = 0;
 
 while (queue.length > 0 || running.size > 0) {
   while (running.size < maxConcurrency && queue.length > 0) {
     const item = queue.shift();
-    const promise = processFeedback(item).then(res => {
+    const index = nextIndex++;
+    const promise = processFeedback(item, index).then(res => {
       running.delete(promise);
       results.push(res);
     });
@@ -211,7 +340,10 @@ while (queue.length > 0 || running.size > 0) {
   }
 }
 
-await Actor.pushData(results);
-console.log(`Processed ${results.length} feedbacks. Success: ${results.filter(r => r.status === 'success').length}, Errors: ${results.filter(r => r.status === 'error').length}`);
+results.sort((a, b) => a.index - b.index);
+const finalOutput = results.map(({ index, ...rest }) => rest);
+
+await Actor.pushData(finalOutput);
+console.log(`Processed ${finalOutput.length} feedbacks. Success: ${finalOutput.filter(r => r.status === 'success').length}, Errors: ${finalOutput.filter(r => r.status === 'error').length}`);
 
 await Actor.exit();
