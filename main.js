@@ -73,7 +73,6 @@ async function saveFileToKVS(filename, buffer, contentType) {
 
 function removeSubjectFromBody(body, subject) {
   if (!subject || !body) return body;
-  // Hapus subject dalam berbagai format: plain, bold, heading
   const escapedSubject = subject.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const patterns = [
     new RegExp(`\\*\\*${escapedSubject}\\*\\*\\s*\\n*`, 'gi'),
@@ -241,12 +240,12 @@ async function processFeedback(item, index) {
     personalization += ` Sign the feedback as "${senderName}".`;
   }
 
-let prompt = `Rewrite the following feedback in English.${personalization}`;
-if (additional) prompt += ` ${additional}`;
-if (originalSubject) {
-  prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
-}
-prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
+  let prompt = `Rewrite the following feedback in English.${personalization}`;
+  if (additional) prompt += ` ${additional}`;
+  if (originalSubject) {
+    prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
+  }
+  prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
 
   try {
     const response = await axios.post(API_URL, { message: prompt }, {
@@ -256,25 +255,6 @@ prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
     let improvedFeedback = response.data.response?.trim() || '';
     if (originalSubject) {
       improvedFeedback = removeSubjectFromBody(improvedFeedback, originalSubject);
-    }
-
-    const lowerImproved = improvedFeedback.toLowerCase();
-    const lowerOriginal = originalFeedback.toLowerCase();
-    const foundPraise = sugarcoatPatterns.find(p => lowerImproved.includes(p));
-    const praiseInOriginal = foundPraise ? lowerOriginal.includes(foundPraise) : false;
-    if (foundPraise && !praiseInOriginal) {
-      return {
-        originalFeedback,
-        improvedFeedback: "",
-        status: 'error',
-        error: `Output blocked by Micro Honesty filter: it contained "${foundPraise}" which was not present in the original feedback.`,
-        timestamp: new Date().toISOString(),
-        auditHash: '',
-        ...(originalSubject && { originalSubject }),
-        ...(recipientName && { recipientName }),
-        ...(senderName && { senderName }),
-        ...(recipientEmail && { recipientEmail }),
-      };
     }
 
     const timestamp = new Date().toISOString();
