@@ -1,85 +1,80 @@
 {
-  "title": "Stech Clarity-Driven Feedback Transformer (SCDFT)",
-  "description": "Transform raw, harsh, or emotional feedback into clear, structured, manager‑ready reports. Each item refined one‑by‑one. Upload CSV or provide a JSON array. SCDFT preserves all criticism and delivers total clarity, converting chaotic language into actionable, professional text.",
-  "type": "object",
-  "schemaVersion": 1,
+  "actorOutputSchemaVersion": 1,
+  "title": "SCDFT Result",
   "properties": {
-    "csvFile": {
-      "title": "CSV File (optional)",
+    "originalFeedback": {
       "type": "string",
-      "description": "Upload a CSV file. You can use your existing company CSV without renaming columns.",
-      "editor": "fileupload"
+      "title": "Original Feedback",
+      "description": "The original raw feedback, complaint, or evaluation text provided by the user.",
+      "template": "{{originalFeedback}}"
     },
-    "feedbacks": {
-      "title": "Feedback Array (optional)",
-      "type": "array",
-      "description": "Alternative to CSV: provide an array of feedback objects. All fields except originalFeedback are optional.",
-      "editor": "json",
-      "prefill": [
-        {
-          "originalFeedback": "His work is a mess. Deadlines keep slipping. I'm tired of saying the same things over and over.",
-          "targetTone": "honest and constructive",
-          "additionalInstructions": "Focus on actionable steps",
-          "context": "performance review",
-          "recipientName": "Andre"
-        }
-      ],
-      "items": {
-        "type": "object",
-        "properties": {
-          "originalFeedback": {
-            "type": "string",
-            "title": "Original Feedback",
-            "description": "The raw feedback or complaint you want to refine."
-          },
-          "targetTone": {
-            "type": "string",
-            "title": "Target Tone",
-            "description": "Desired tone for this feedback.",
-            "enum": ["honest and constructive", "empathetic", "professional and actionable", "firm but fair"]
-          },
-          "additionalInstructions": {
-            "type": "string",
-            "title": "Additional Instructions",
-            "description": "Extra guidance for the refinement.",
-            "editor": "textarea"
-          },
-          "context": {
-            "type": "string",
-            "title": "Context (optional)",
-            "description": "Type of feedback (performance review, customer complaint, product review, public report)."
-          },
-          "recipientName": {
-            "type": "string",
-            "title": "Recipient Name (optional)",
-            "description": "Name of the recipient. If provided, SCDFT will address them respectfully."
-          }
-        },
-        "required": ["originalFeedback"]
-      }
-    },
-    "defaultTone": {
-      "title": "Default Tone",
+    "improvedFeedback": {
       "type": "string",
-      "description": "Fallback tone if not specified per item.",
-      "default": "honest and constructive",
-      "enum": ["honest and constructive", "empathetic", "professional and actionable", "firm but fair"]
+      "title": "Improved Feedback",
+      "description": "The feedback refined by SCDFT with total clarity, honesty, and structured, professional language.",
+      "template": "{{improvedFeedback}}"
     },
-    "maxConcurrency": {
-      "title": "Max Concurrency",
-      "type": "integer",
-      "description": "Number of feedback items to process simultaneously (1-20).",
-      "minimum": 1,
-      "maximum": 20,
-      "default": 5
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "description": "The success or failure status of the processing.",
+      "template": "{{status}}"
     },
-    "timeout": {
-      "title": "Timeout (seconds)",
-      "type": "integer",
-      "description": "Max wait time per feedback request.",
-      "minimum": 10,
-      "maximum": 300,
-      "default": 60
+    "timestamp": {
+      "type": "string",
+      "title": "Timestamp",
+      "description": "The processing timestamp in ISO 8601 format.",
+      "template": "{{timestamp}}"
+    },
+    "auditHash": {
+      "type": "string",
+      "title": "Audit Hash",
+      "description": "SHA-256 hash of originalFeedback + improvedFeedback + timestamp for audit trail and EU AI Act compliance.",
+      "template": "{{auditHash}}"
+    },
+    "download_docx": {
+      "type": "string",
+      "title": "Download DOCX",
+      "description": "URL to download the improved feedback as a Microsoft Word (.docx) file.",
+      "template": "{{download_docx}}"
+    },
+    "download_pdf": {
+      "type": "string",
+      "title": "Download PDF",
+      "description": "URL to download the improved feedback as a PDF file.",
+      "template": "{{download_pdf}}"
+    },
+    "originalSubject": {
+      "type": "string",
+      "title": "Original Subject",
+      "description": "Original feedback subject line.",
+      "template": "{{originalSubject}}"
+    },
+    "recipientName": {
+      "type": "string",
+      "title": "Recipient Name",
+      "description": "Name of the recipient.",
+      "template": "{{recipientName}}"
+    },
+    "senderName": {
+      "type": "string",
+      "title": "Sender Name",
+      "description": "Name of the sender.",
+      "template": "{{senderName}}"
+    },
+    "recipientEmail": {
+      "type": "string",
+      "title": "Recipient Email",
+      "description": "Email address of the recipient.",
+      "template": "{{recipientEmail}}"
     }
-  }
+  },
+  "required": [
+    "originalFeedback",
+    "improvedFeedback",
+    "status",
+    "auditHash",
+    "download_docx",
+    "download_pdf"
+  ]
 }
