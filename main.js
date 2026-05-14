@@ -232,13 +232,13 @@ async function processFeedback(item, index) {
   const senderName = item.senderName || '';
   const recipientEmail = item.recipientEmail || '';
 
-  let personalization = '';
-  if (recipientName) {
-    personalization += ` Address the feedback to "${recipientName}".`;
-  }
-  if (senderName) {
-    personalization += ` Sign the feedback as "${senderName}".`;
-  }
+ let personalization = '';
+if (recipientName) {
+  personalization += ` The feedback concerns "${recipientName}".`;
+}
+if (senderName) {
+  personalization += ` The feedback is from "${senderName}".`;
+}
 
   let prompt = `Rewrite the following feedback in English.${personalization}`;
   if (additional) prompt += ` ${additional}`;
