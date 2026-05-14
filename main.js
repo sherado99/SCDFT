@@ -232,7 +232,7 @@ async function processFeedback(item, index) {
     personalization += ` Sign the feedback as "${senderName}".`;
   }
 
-  let prompt = `Rewrite the following feedback in English to be clear, structured, and professional while keeping all criticism intact.${personalization}`;
+  let prompt = `Rewrite the following feedback in English to be while keeping all criticism intact.${personalization}`;
   if (additional) prompt += ` ${additional}`;
   if (originalSubject) {
     prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
