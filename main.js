@@ -73,9 +73,18 @@ async function saveFileToKVS(filename, buffer, contentType) {
 
 function removeSubjectFromBody(body, subject) {
   if (!subject || !body) return body;
+  // Hapus subject dalam berbagai format: plain, bold, heading
   const escapedSubject = subject.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const subjectPattern = new RegExp(`^(Subject\\s*:\\s*)?\\s*${escapedSubject}\\s*\\n*`, 'i');
-  return body.replace(subjectPattern, '').trim();
+  const patterns = [
+    new RegExp(`\\*\\*${escapedSubject}\\*\\*\\s*\\n*`, 'gi'),
+    new RegExp(`#\\s*${escapedSubject}\\s*\\n*`, 'gi'),
+    new RegExp(`^${escapedSubject}\\s*\\n*`, 'gim'),
+    new RegExp(`^Subject\\s*:\\s*${escapedSubject}\\s*\\n*`, 'gim'),
+  ];
+  for (const pattern of patterns) {
+    body = body.replace(pattern, '').trim();
+  }
+  return body;
 }
 
 // ========== INPUT CONFIGURATION ==========
@@ -249,14 +258,6 @@ prompt += `\n\nOriginal feedback:\n${originalFeedback}`;
       improvedFeedback = removeSubjectFromBody(improvedFeedback, originalSubject);
     }
 
-    // Micro Honesty Guard for Feedback
-    const sugarcoatPatterns = [
-      'excellent', 'outstanding', 'perfect', 'flawless', 'amazing',
-      'best employee', 'top performer', 'exceptional talent',
-      'no issues', 'no problems', 'nothing to improve',
-      'always', 'never', 'every time',
-      'we are very impressed', 'we couldn\'t be happier'
-    ];
     const lowerImproved = improvedFeedback.toLowerCase();
     const lowerOriginal = originalFeedback.toLowerCase();
     const foundPraise = sugarcoatPatterns.find(p => lowerImproved.includes(p));
