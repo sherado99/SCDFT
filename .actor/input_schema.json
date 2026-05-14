@@ -1,80 +1,97 @@
 {
-  "actorOutputSchemaVersion": 1,
-  "title": "SCDFT Result",
+  "title": "Stech Clarity-Driven Feedback Transformer (SCDFT)",
+  "description": "Transform multiple raw, harsh, or emotional feedback items into clear, structured, manager-ready reports. Upload CSV (with flexible column names) or provide a JSON array. SCDFT automatically maps common column names (feedback, name, sender, etc.).",
+  "type": "object",
+  "schemaVersion": 1,
   "properties": {
-    "originalFeedback": {
+    "csvFile": {
+      "title": "CSV File (optional)",
       "type": "string",
-      "title": "Original Feedback",
-      "description": "The original raw feedback, complaint, or evaluation text provided by the user.",
-      "template": "{{originalFeedback}}"
+      "description": "Upload a CSV file. You can use your existing company CSV without renaming columns. If you use dynamic mapping, provide columnMapping and rejectionTemplate.",
+      "editor": "fileupload"
     },
-    "improvedFeedback": {
-      "type": "string",
-      "title": "Improved Feedback",
-      "description": "The feedback refined by SCDFT with total clarity, honesty, and structured, professional language.",
-      "template": "{{improvedFeedback}}"
+    "feedbacks": {
+      "title": "Feedback Array (optional)",
+      "type": "array",
+      "description": "Alternative to CSV: provide an array of feedback objects. All personalization fields are optional.",
+      "editor": "json",
+      "prefill": [
+        {
+          "originalFeedback": "This thing is a piece of crap. Fell apart in two weeks. DO NOT BUY THIS GARBAGE.",
+          "additionalInstructions": "",
+          "originalSubject": "Product Complaint",
+          "recipientName": "Lars",
+          "senderName": "",
+          "recipientEmail": ""
+        }
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "originalFeedback": {
+            "type": "string",
+            "title": "Original Feedback",
+            "description": "The raw feedback, complaint, or evaluation text you want to refine."
+          },
+          "additionalInstructions": {
+            "type": "string",
+            "title": "Additional Instructions",
+            "description": "Extra guidance for the refinement.",
+            "editor": "textarea"
+          },
+          "originalSubject": {
+            "type": "string",
+            "title": "Original Subject (optional)",
+            "description": "Original feedback subject line. Never changed by SCDFT. Included for reference and ATS compatibility."
+          },
+          "recipientName": {
+            "type": "string",
+            "title": "Recipient Name (optional)",
+            "description": "Name of the recipient for personalization. SCDFT also recognizes: recipient, name, recipient_name."
+          },
+          "senderName": {
+            "type": "string",
+            "title": "Sender Name (optional)",
+            "description": "Name of the sender to sign the feedback. SCDFT also recognizes: sender, sender_name."
+          },
+          "recipientEmail": {
+            "type": "string",
+            "title": "Recipient Email (optional)",
+            "description": "Recipient's email address. SCDFT also recognizes: email, recipient_email. Carried through to output for ATS compatibility."
+          }
+        },
+        "required": ["originalFeedback"]
+      }
     },
-    "status": {
-      "type": "string",
-      "title": "Status",
-      "description": "The success or failure status of the processing.",
-      "template": "{{status}}"
+    "columnMapping": {
+      "title": "Column Mapping (for CSV)",
+      "type": "object",
+      "description": "Map placeholders to CSV column names. Example: { \"name\": \"Full Name\", \"role\": \"Job Title\" }",
+      "editor": "json",
+      "default": {}
     },
-    "timestamp": {
+    "rejectionTemplate": {
+      "title": "Rejection Template (for CSV)",
       "type": "string",
-      "title": "Timestamp",
-      "description": "The processing timestamp in ISO 8601 format.",
-      "template": "{{timestamp}}"
+      "description": "Template with placeholders like {name}, {role}. Required if columnMapping is provided.",
+      "editor": "textarea",
+      "default": ""
     },
-    "auditHash": {
-      "type": "string",
-      "title": "Audit Hash",
-      "description": "SHA-256 hash of originalFeedback + improvedFeedback + timestamp for audit trail and EU AI Act compliance.",
-      "template": "{{auditHash}}"
+    "maxConcurrency": {
+      "title": "Max Concurrency",
+      "type": "integer",
+      "description": "Number of feedback items to process simultaneously (1-20).",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5
     },
-    "download_docx": {
-      "type": "string",
-      "title": "Download DOCX",
-      "description": "URL to download the improved feedback as a Microsoft Word (.docx) file.",
-      "template": "{{download_docx}}"
-    },
-    "download_pdf": {
-      "type": "string",
-      "title": "Download PDF",
-      "description": "URL to download the improved feedback as a PDF file.",
-      "template": "{{download_pdf}}"
-    },
-    "originalSubject": {
-      "type": "string",
-      "title": "Original Subject",
-      "description": "Original feedback subject line.",
-      "template": "{{originalSubject}}"
-    },
-    "recipientName": {
-      "type": "string",
-      "title": "Recipient Name",
-      "description": "Name of the recipient.",
-      "template": "{{recipientName}}"
-    },
-    "senderName": {
-      "type": "string",
-      "title": "Sender Name",
-      "description": "Name of the sender.",
-      "template": "{{senderName}}"
-    },
-    "recipientEmail": {
-      "type": "string",
-      "title": "Recipient Email",
-      "description": "Email address of the recipient.",
-      "template": "{{recipientEmail}}"
+    "timeout": {
+      "title": "Timeout (seconds)",
+      "type": "integer",
+      "description": "Max wait time per feedback request.",
+      "minimum": 10,
+      "maximum": 300,
+      "default": 60
     }
-  },
-  "required": [
-    "originalFeedback",
-    "improvedFeedback",
-    "status",
-    "auditHash",
-    "download_docx",
-    "download_pdf"
-  ]
+  }
 }
