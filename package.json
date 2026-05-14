@@ -1,14 +1,14 @@
 {
-  "name": "stech-clarity-driven-feedback-transformer",
-  "version": "1.0.0",
+  "name": "Stech Clarity-Driven Feedback Transformer (SCDFT)",
+  "version": "2.0.0",
   "type": "module",
-  "description": "SCDFT – Stech Clarity-Driven Feedback Transformer. Each feedback refined one-by-one, ensuring every evaluation is delivered with total clarity, honesty, and professionalism.",
-  "main": "main.js",
-  "scripts": {
-    "start": "node main.js"
-  },
   "dependencies": {
     "apify": "^3.1.0",
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "docx": "^8.5.0",
+    "pdfkit": "^0.15.0"
+  },
+  "scripts": {
+    "start": "node main.js"
   }
 }
