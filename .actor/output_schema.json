@@ -10,52 +10,70 @@
     },
     "improvedFeedback": {
       "type": "string",
-      "description": "The clarity‑driven refinement, written from the 'I' perspective.",
+      "description": "The feedback refined by SCDFT with total clarity, honesty, and structured, professional language.",
       "title": "Improved Feedback",
       "template": "{{improvedFeedback}}"
     },
-    "toneUsed": {
-      "type": "string",
-      "description": "The tone applied.",
-      "title": "Tone Used",
-      "template": "{{toneUsed}}"
-    },
     "status": {
       "type": "string",
-      "description": "'success' or 'error'.",
+      "description": "The success or failure status of the processing (e.g., 'success' or 'error').",
       "title": "Status",
       "template": "{{status}}"
     },
-    "error": {
-      "type": "string",
-      "description": "Error message if status is 'error'.",
-      "title": "Error",
-      "template": "{{error}}"
-    },
     "timestamp": {
       "type": "string",
-      "description": "Processing timestamp in ISO 8601.",
+      "description": "The processing timestamp in ISO 8601 format.",
       "title": "Timestamp",
       "template": "{{timestamp}}"
     },
-    "context": {
+    "auditHash": {
       "type": "string",
-      "title": "Context",
-      "description": "Feedback context if provided.",
-      "template": "{{context}}"
+      "description": "SHA-256 hash of originalFeedback + improvedFeedback + timestamp for audit trail and EU AI Act compliance.",
+      "title": "Audit Hash",
+      "template": "{{auditHash}}"
+    },
+    "download_docx": {
+      "type": "string",
+      "description": "URL to download the improved feedback as a Microsoft Word (.docx) file.",
+      "title": "Download DOCX",
+      "template": "{{download_docx}}"
+    },
+    "download_pdf": {
+      "type": "string",
+      "description": "URL to download the improved feedback as a PDF file.",
+      "title": "Download PDF",
+      "template": "{{download_pdf}}"
+    },
+    "originalSubject": {
+      "type": "string",
+      "title": "Original Subject",
+      "description": "Original feedback subject line.",
+      "template": "{{originalSubject}}"
     },
     "recipientName": {
       "type": "string",
       "title": "Recipient Name",
-      "description": "The person the feedback concerns, if provided.",
+      "description": "Name of the recipient.",
       "template": "{{recipientName}}"
     },
-    "auditHash": {
+    "senderName": {
       "type": "string",
-      "title": "Audit Hash",
-      "description": "SHA‑256 hash of the output for audit trail.",
-      "template": "{{auditHash}}"
+      "title": "Sender Name",
+      "description": "Name of the sender.",
+      "template": "{{senderName}}"
+    },
+    "recipientEmail": {
+      "type": "string",
+      "title": "Recipient Email",
+      "description": "Email address of the recipient.",
+      "template": "{{recipientEmail}}"
+    },
+    "context": {
+      "type": "string",
+      "title": "Context",
+      "description": "The context of the feedback (e.g., performance review, customer complaint, product review, public report).",
+      "template": "{{context}}"
     }
   },
-  "required": ["originalFeedback", "improvedFeedback", "status"]
+  "required": ["originalFeedback", "improvedFeedback", "status", "auditHash", "download_docx", "download_pdf"]
 }
