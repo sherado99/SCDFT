@@ -240,7 +240,7 @@ if (senderName) {
   personalization += ` The feedback is from "${senderName}".`;
 }
 
-  let prompt = `Transform the original feedback with clear and polite but not loss emotion.the sender name not talking with you.make you are like sender name views,${personalization}`;
+  let prompt = `Articulate the following customer feedback. Use clear, professional language while retaining the original intensity of the sender's emotion and viewpoint. Do not turn it into a company reply. Write from the perspective of the feedback giver, using their voice.${personalization}`;
   if (additional) prompt += ` ${additional}`;
   if (originalSubject) {
     prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
