@@ -240,7 +240,7 @@ if (senderName) {
   personalization += ` The feedback is from "${senderName}".`;
 }
 
-  let prompt = `Transform the original feedback in English.make you are like sender name views,rewrite with clear,polite but not loss emotion,${personalization}`;
+  let prompt = `Transform the original feedback with clear and polite but not loss emotion.the sender name not talking with you.make you are like sender name views,${personalization}`;
   if (additional) prompt += ` ${additional}`;
   if (originalSubject) {
     prompt += `\nThe feedback subject is "${originalSubject}". Keep the subject unchanged.`;
